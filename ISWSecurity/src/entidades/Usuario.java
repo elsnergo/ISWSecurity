@@ -5,28 +5,28 @@ import java.sql.Timestamp;
 public class Usuario {
 	
 	//Atributos
-	private int usuarioID;
-	private String nombreUsuario;
+	private int idUser;
+	private String user;
 	private String pwd;
 	private String nombre;
 	private String apellido;
-	private Timestamp fechaCreacion;
-	private Timestamp fechaModificacion;
-	private Timestamp fechaEliminacion;
+	private Timestamp fCreacion;
+	private Timestamp fModificacion;
+	private Timestamp fEliminacion;
 	private int estado;
 	
 	//Metodos
-	public int getUsuarioID() {
-		return usuarioID;
+	public int getIdUser() {
+		return idUser;
 	}
-	public void setUsuarioID(int usuarioID) {
-		this.usuarioID = usuarioID;
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
-	public String getNombreUsuario() {
-		return nombreUsuario;
+	public String getUser() {
+		return user;
 	}
-	public void setNombreUsuario(String nombreUsuario) {
-		this.nombreUsuario = nombreUsuario;
+	public void setUser(String user) {
+		this.user = user;
 	}
 	public String getPwd() {
 		return pwd;
@@ -46,23 +46,23 @@ public class Usuario {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-	public Timestamp getFechaCreacion() {
-		return fechaCreacion;
+	public Timestamp getfCreacion() {
+		return fCreacion;
 	}
-	public void setFechaCreacion(Timestamp fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public void setfCreacion(Timestamp fCreacion) {
+		this.fCreacion = fCreacion;
 	}
-	public Timestamp getFechaModificacion() {
-		return fechaModificacion;
+	public Timestamp getfModificacion() {
+		return fModificacion;
 	}
-	public void setFechaModificacion(Timestamp fechaModificacion) {
-		this.fechaModificacion = fechaModificacion;
+	public void setfModificacion(Timestamp fModificacion) {
+		this.fModificacion = fModificacion;
 	}
-	public Timestamp getFechaEliminacion() {
-		return fechaEliminacion;
+	public Timestamp getfEliminacion() {
+		return fEliminacion;
 	}
-	public void setFechaEliminacion(Timestamp fechaEliminacion) {
-		this.fechaEliminacion = fechaEliminacion;
+	public void setfEliminacion(Timestamp fEliminacion) {
+		this.fEliminacion = fEliminacion;
 	}
 	public int getEstado() {
 		return estado;
@@ -71,7 +71,4 @@ public class Usuario {
 		this.estado = estado;
 	}
 	
-	
-	
-
 }

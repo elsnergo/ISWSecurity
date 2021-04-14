@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" 
+import="entidades.*, datos.*, java.util.*;"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  <meta name="description" content="">
  <meta name="author" content="">
-<title>Nuevo Usuario</title>
+<title>Rol-Usuario</title>
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link
@@ -31,33 +31,47 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Registrar Nuevo Usuario</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Asignar rol a Usuario</h1>
                             </div>
-                            <form class="user" method="post" action="./Sl_GestionUsuario" >
+                            <form class="user" method="post" action="./Sl_GestionRolUser" >
 								<!-- El valor de este input es para el Servlet opcion guardar -->
                             	<input name="opcion" type="hidden" value="1" />
                             	<div class="form-group row">
                                     <div class="col-sm-12 mb-3">
-                                        <input type="text" class="form-control form-control-user" name="txtNombres" id="txtNombres"
-                                            placeholder="Nombres" required>
+                                    	<%
+		                                	ArrayList<Usuario> listUser = new ArrayList<Usuario>();
+		                                	Dt_Usuario dtu = new Dt_Usuario();
+											listUser = dtu.listaUserActivos();
+                                		%>
+                                    	<select class="form-control" name="cbxUser" id="cbxUser" required>
+                                    	<option value="">Seleccione...</option>
+                                    	<%
+                                    		for(Usuario u: listUser){
+                                    	%>	
+                                    		<option value="<%=u.getIdUser()%>"><%=u.getUser()%></option>
+                                    	<%
+                                    		}
+                                    	%>
+                                    	
+                                    	</select>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control form-control-user" name="txtApellidos" id="txtApellidos"
-                                            placeholder="Apellidos" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <div class="col-sm-12 mb-3">
-                                        <input type="text" class="form-control form-control-user" name="txtUserName" id="txtUserName"
-                                            placeholder="Nombre de Usuario" required>
-                                    </div>
-                                    <div class="col-sm-12 mb-3">
-                                        <input type="password" class="form-control form-control-user" name="txtPwd" id="txtPwd"
-                                            placeholder="Contraseña" required>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="password" class="form-control form-control-user" name="txtPwd2" id="txtPwd2"
-                                            placeholder="Repetir Contraseña" required>
+                                    	<%
+		                                	ArrayList<Rol> listRol = new ArrayList<Rol>();
+		                                	Dt_Rol dtr = new Dt_Rol();
+											listRol = dtr.listaRolActivos();
+                                		%>
+                                    	<select class="form-control" name="cbxRol" id="cbxRol" required>
+                                    	<option value="">Seleccione...</option>
+                                    	<%
+                                    		for(Rol r: listRol){
+                                    	%>	
+                                    		<option value="<%=r.getIdRol()%>"><%=r.getRol()%></option>
+                                    	<%
+                                    		}
+                                    	%>
+                                    	
+                                    	</select>
                                     </div>
                                 </div>
 	                            <hr>

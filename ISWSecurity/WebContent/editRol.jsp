@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" 
+import="entidades.Rol, datos.Dt_Rol, java.util.*;"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  <meta name="description" content="">
  <meta name="author" content="">
-<title>Nuevo Usuario</title>
+<title>Edit Rol</title>
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link
@@ -31,33 +31,28 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Registrar Nuevo Usuario</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Editar Rol</h1>
                             </div>
-                            <form class="user" method="post" action="./Sl_GestionUsuario" >
+                            <%
+                            	String rol = "";
+								rol = request.getParameter("rolID")==null?"0":request.getParameter("rolID");
+														
+								Rol r = new Rol();
+								Dt_Rol dtr = new Dt_Rol();
+								r = dtr.getRol(Integer.parseInt(rol));
+                            %>
+                            
+                            <form class="user" method="post" action="./Sl_GetionRol" >
 								<!-- El valor de este input es para el Servlet opcion guardar -->
-                            	<input name="opcion" type="hidden" value="1" />
+                            	<input name="idRol" type="hidden" value="<%=r.getIdRol()%>" />
+                            	<input name="opcion" type="hidden" value="2" />
                             	<div class="form-group row">
                                     <div class="col-sm-12 mb-3">
-                                        <input type="text" class="form-control form-control-user" name="txtNombres" id="txtNombres"
-                                            placeholder="Nombres" required>
+                                        <input type="text" class="form-control form-control-user" name="txtRol" id="txtRol"
+                                            placeholder="Rol" required>
                                     </div>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control form-control-user" name="txtApellidos" id="txtApellidos"
-                                            placeholder="Apellidos" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3">
-                                        <input type="text" class="form-control form-control-user" name="txtUserName" id="txtUserName"
-                                            placeholder="Nombre de Usuario" required>
-                                    </div>
-                                    <div class="col-sm-12 mb-3">
-                                        <input type="password" class="form-control form-control-user" name="txtPwd" id="txtPwd"
-                                            placeholder="Contraseña" required>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="password" class="form-control form-control-user" name="txtPwd2" id="txtPwd2"
-                                            placeholder="Repetir Contraseña" required>
+                                        <textarea name="txtRolDesc" id="txtRolDesc" rows="5" maxlength="100" required></textarea>
                                     </div>
                                 </div>
 	                            <hr>
@@ -87,5 +82,14 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+<script>  
+   $(document).ready(function()
+	{
+		$("#txtRol").val("<%=r.getRol()%>");
+		$("#txtRolDesc").val("<%=r.getDesc_rol()%>");
+	});
+</script>
+    
 </body>
 </html>

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="entidades.Usuario, datos.Dt_Usuario, java.util.*;" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" 
+import="entidades.Rol, datos.Dt_Rol, java.util.*;" %>
 <!DOCTYPE html>
 <html>
 
@@ -8,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>Usuarios Registrados</title>
+<title>Roles Registrados</title>
 
 <!-- Custom fonts for this template -->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -370,11 +371,11 @@
                     <p class="mb-4">Desde esta pantalla del sistema usted podrá controlar la creación, actualización y el dar de baja a los usuarios.</p>
 					
 					<!-- MODAL NUEVO USUARIO -->
-					<div class="modal fade" id="modalNewUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal fade" id="modalNewRol" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 					  <div class="modal-dialog modal-dialog-centered" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalCenterTitle">Registrar Nuevo Usuario</h5>
+					        <h5 class="modal-title" id="exampleModalCenterTitle">Registrar Nuevo Rol</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -425,25 +426,21 @@
 					</div>
 					<!-- FIN Modal -->
 					
-                    <!-- DataTables Usuarios -->
+                    <!-- DataTables Roles -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Usuarios Registrados</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Roles Registrados</h6>
                         </div>
                         <div class="card-body">
                         	<div align="right">
-                        		<a href="newUsuario.jsp">
-                        			<i class="fas fa-user-plus fa-2x" title="Registrar Nuevo Usuario"></i>
-                        		</a>
-                        		&nbsp;&nbsp;
                         		<!-- Button trigger modal -->
-                        		<a href="#" data-toggle="modal" data-target="#modalNewUser">
-                        			<i class="fas fa-plus-square fa-2x" title="Registrar Nuevo Usuario"></i>
+                        		<a href="#" data-toggle="modal" data-target="#modalNewRol">
+                        			<i class="fas fa-plus-square fa-2x" title="Registrar Nuevo Rol"></i>
                         		</a>
                         		<!-- FIN Button trigger modal -->
                         		&nbsp;&nbsp;
                         		<a href="#">
-                        			<i class="fas fa-print fa-2x" title="Imprimir Lista de Usuarios Activos"></i>
+                        			<i class="fas fa-print fa-2x" title="Imprimir Lista de Roles Activos"></i>
                         		</a>
                         		
                         	</div>
@@ -451,50 +448,44 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="tblUsers" width="100%" cellspacing="0">
                                 <%
-                                	ArrayList<Usuario> listUser = new ArrayList<Usuario>();
-                                	Dt_Usuario dtu = new Dt_Usuario();
-                                	listUser = dtu.listaUserActivos();
+                                	ArrayList<Rol> listRol = new ArrayList<Rol>();
+                                	Dt_Rol dtr = new Dt_Rol();
+                                	listRol = dtr.listaRolActivos();
                                 	
                                 %>
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Login</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
+                                            <th>Rol</th>
+                                            <th>Descripcion</th>
                                             <th>Estado</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Login</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
+                                           	<th>Rol</th>
+                                            <th>Descripcion</th>
                                             <th>Estado</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                    		<%
-                                       		for(Usuario us: listUser){
+                                       		for(Rol r: listRol){
                                        	%>
                                        <tr>
-                                           <td><%=us.getIdUser() %></td>
-                                           <td><%=us.getUser() %></td>
-                                           <td><%=us.getNombre() %></td>
-                                           <td><%=us.getApellido() %></td>
-                                           <td><%=us.getEstado()==1||us.getEstado()==2?"ACTIVO":"INACTIVO" %></td>
+                                           <td><%=r.getRol() %></td>
+                                           <td><%=r.getDesc_rol() %></td>
+                                           <td><%=r.getEstado()==1||r.getEstado()==2?"ACTIVO":"INACTIVO" %></td>
                                            <td>
-                                           		<a id="btn-edita-abrir" href="editUsuario.jsp?userID=<%=us.getIdUser()%>">
-                        							<i class="fas fa-edit" title="Modificar datos del Usuario"></i>
+                                           		<a id="btn-edita-abrir" href="editRol.jsp?rolID=<%=r.getIdRol()%>">
+                        							<i class="fas fa-edit" title="Modificar datos del Rol"></i>
                         						</a>
                                            		<a href="#">
-                        							<i class="fas fa-trash-alt" title="Eliminar Usuario"></i>
+                        							<i class="fas fa-trash-alt" title="Eliminar Rol"></i>
                         						</a>
                                            		<a href="#">
-                        							<i class="fas fa-eye" title="Visualizar Usuario"></i>
+                        							<i class="fas fa-eye" title="Visualizar Rol"></i>
                         						</a>
                                            
                                            </td>
