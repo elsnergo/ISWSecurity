@@ -88,6 +88,7 @@ public class Dt_Usuario {
 				user.setPwd(rs.getString("pwd"));
 				user.setNombre(rs.getString("nombres"));
 				user.setApellido(rs.getString("apellidos"));
+				user.setUrl_foto(rs.getString("url_foto"));
 				user.setEstado(rs.getInt("estado"));
 			}
 		}
@@ -207,6 +208,54 @@ public class Dt_Usuario {
 		}
 		return modificado;
 	}
+	
+	// Metodo para guardar la foto del Usuario
+	public boolean guardarFotoUser(int idUser, String urlFoto)
+	{
+		boolean actualizado = false;
+		
+		try
+		{
+			c = PoolConexion.getConnection();
+			this.llenaRsUsuario(c);	
+			rsUsuario.beforeFirst();
+			while(rsUsuario.next())
+			{
+				if(rsUsuario.getInt(1)==idUser)
+				{
+					
+					rsUsuario.updateString("url_foto", urlFoto);
+					rsUsuario.updateInt("estado", 2);
+					rsUsuario.updateRow();
+					actualizado = true;
+					break;
+				}
+			}
+		}
+		catch (Exception e) 
+		{
+			System.err.println("ERROR AL GUARDAR FOTO "+e.getMessage());
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				if(rsUsuario != null){
+					rsUsuario.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return actualizado;
+	}
+	
 	
 	
 }

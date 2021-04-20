@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidades.Rol;
+import entidades.Usuario;
 
 public class Dt_Rol {
 	
@@ -112,6 +113,51 @@ public class Dt_Rol {
 			}
 			
 			return r;
+		}
+		
+		// Metodo para modificar rol
+		public boolean modificarRol(Rol r)
+		{
+			boolean modificado=false;	
+			try
+			{
+				c = PoolConexion.getConnection();
+				this.llenaRsRol(c);
+				rsRol.beforeFirst();
+				while (rsRol.next())
+				{
+					if(rsRol.getInt(1)==r.getIdRol())
+					{
+						rsRol.updateString("rol", r.getRol());
+						rsRol.updateString("desc_rol", r.getDesc_rol());
+						rsRol.updateInt("estado", 2);
+						rsRol.updateRow();
+						modificado=true;
+						break;
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				System.err.println("ERROR AL ACTUALIZAR USUARIO "+e.getMessage());
+				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					if(rsRol != null){
+						rsRol.close();
+					}
+					if(c != null){
+						PoolConexion.closeConnection(c);
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return modificado;
 		}
 	
 

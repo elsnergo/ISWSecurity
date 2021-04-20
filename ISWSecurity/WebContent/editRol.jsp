@@ -42,7 +42,7 @@ import="entidades.Rol, datos.Dt_Rol, java.util.*;"%>
 								r = dtr.getRol(Integer.parseInt(rol));
                             %>
                             
-                            <form class="user" method="post" action="./Sl_GetionRol" >
+                            <form class="user" method="post" action="./Sl_GestionRol" >
 								<!-- El valor de este input es para el Servlet opcion guardar -->
                             	<input name="idRol" type="hidden" value="<%=r.getIdRol()%>" />
                             	<input name="opcion" type="hidden" value="2" />

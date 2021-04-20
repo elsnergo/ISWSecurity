@@ -496,6 +496,9 @@
                                            		<a href="#">
                         							<i class="fas fa-eye" title="Visualizar Usuario"></i>
                         						</a>
+                                           		<a href="fotoUser.jsp?idUsuario=<%=us.getIdUser()%>">
+                        							<i class="fas fa-camera" title="Registrar Foto del Usuario"></i>
+                        						</a>
                                            
                                            </td>
                                        </tr>
