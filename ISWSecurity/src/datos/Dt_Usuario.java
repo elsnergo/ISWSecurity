@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+
 import entidades.Usuario;
 
 public class Dt_Usuario {
@@ -32,7 +34,7 @@ public class Dt_Usuario {
 		ArrayList<Usuario> listUser = new ArrayList<Usuario>();
 		try{
 			c = PoolConexion.getConnection();
-			ps = c.prepareStatement("select * from public.\"usuario\"", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+			ps = c.prepareStatement("select * from public.\"usuario\" where estado<>3", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE, ResultSet.HOLD_CURSORS_OVER_COMMIT);
 			rs = ps.executeQuery();
 			while(rs.next()){
 				Usuario user = new Usuario();
@@ -207,6 +209,51 @@ public class Dt_Usuario {
 			}
 		}
 		return modificado;
+	}
+	
+	// Metodo para eliminar usuario
+	public boolean eliminarUser(int idUsuario)
+	{
+		boolean eliminado=false;	
+		try
+		{
+			c = PoolConexion.getConnection();
+			this.llenaRsUsuario(c);
+			rsUsuario.beforeFirst();
+			Date fechaSistema = new Date();
+			while (rsUsuario.next())
+			{
+				if(rsUsuario.getInt(1)==idUsuario)
+				{
+					rsUsuario.updateTimestamp("feliminacion", new java.sql.Timestamp(fechaSistema.getTime()));
+					rsUsuario.updateInt("estado", 3);
+					rsUsuario.updateRow();
+					eliminado=true;
+					break;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			System.err.println("ERROR AL ACTUALIZAR USUARIO "+e.getMessage());
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				if(rsUsuario != null){
+					rsUsuario.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return eliminado;
 	}
 	
 	// Metodo para guardar la foto del Usuario

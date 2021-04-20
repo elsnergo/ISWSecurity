@@ -490,7 +490,7 @@
                                            		<a id="btn-edita-abrir" href="editUsuario.jsp?userID=<%=us.getIdUser()%>">
                         							<i class="fas fa-edit" title="Modificar datos del Usuario"></i>
                         						</a>
-                                           		<a href="#">
+                                           		<a href="Sl_GestionUsuario?idU=<%=us.getIdUser()%>">
                         							<i class="fas fa-trash-alt" title="Eliminar Usuario"></i>
                         						</a>
                                            		<a href="#">

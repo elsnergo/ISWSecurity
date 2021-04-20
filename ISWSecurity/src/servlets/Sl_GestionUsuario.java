@@ -32,7 +32,20 @@ public class Sl_GestionUsuario extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int idUser =0;
+		idUser = Integer.parseInt(request.getParameter("idU"));
+		Dt_Usuario dtu = new Dt_Usuario();
+		
+		if(dtu.eliminarUser(idUser)) {
+        	response.sendRedirect("tblUsuarios.jsp?msj=5");
+        }
+        else {
+        	response.sendRedirect("tblUsuarios.jsp?msj=6");
+        }
+		
+		
+		
 	}
 
 	/**
@@ -49,7 +62,7 @@ public class Sl_GestionUsuario extends HttpServlet {
 		//CONSTRUIR EL OBJETO USUARIO
 		Dt_Usuario dtu = new Dt_Usuario();
 		Usuario user = new Usuario();
-		user.setIdUser(Integer.parseInt(request.getParameter("idUsuario")));
+		
 		user.setNombre(request.getParameter("txtNombres"));
 		user.setApellido(request.getParameter("txtApellidos"));
 		user.setUser(request.getParameter("txtUserName"));
@@ -83,6 +96,7 @@ public class Sl_GestionUsuario extends HttpServlet {
 			case 2:{
 					
 				try {
+					user.setIdUser(Integer.parseInt(request.getParameter("idUsuario")));
 		        	//PARA GUARDAR LA FECHA Y HORA DE MODIFICACION
 			        Date fechaSistema = new Date();
 			        user.setfModificacion(new java.sql.Timestamp(fechaSistema.getTime()));
@@ -105,7 +119,7 @@ public class Sl_GestionUsuario extends HttpServlet {
 				}
 			
 			default:
-				response.sendRedirect("tblUsuarios.jsp?msj=5");	
+				response.sendRedirect("tblUsuarios.jsp?msj=7");	
 				break;
 		}
 		
