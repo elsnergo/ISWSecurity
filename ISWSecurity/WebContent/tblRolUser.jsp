@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="entidades.Usuario, datos.Dt_Usuario, java.util.*;" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="vistas.Vw_RolUser, datos.Dt_RolUser, java.util.*;" %>
 <!DOCTYPE html>
 <%
 	//Variable de control de mensajes
@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>Usuarios Registrados</title>
+<title>Roles Asignados</title>
 
 <!-- Custom fonts for this template -->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -439,13 +439,13 @@
                         </div>
                         <div class="card-body">
                         	<div align="right">
-                        		<a href="newUsuario.jsp">
-                        			<i class="fas fa-user-plus fa-2x" title="Registrar Nuevo Usuario"></i>
+                        		<a href="rolUser.jsp">
+                        			<i class="fas fa-user-plus fa-2x" title="Asignar Rol a Usuario"></i>
                         		</a>
                         		&nbsp;&nbsp;
                         		<!-- Button trigger modal -->
                         		<a href="#" data-toggle="modal" data-target="#modalNewUser">
-                        			<i class="fas fa-plus-square fa-2x" title="Registrar Nuevo Usuario"></i>
+                        			<i class="fas fa-plus-square fa-2x" title="Asignar Rol a Usuario"></i>
                         		</a>
                         		<!-- FIN Button trigger modal -->
                         		&nbsp;&nbsp;
@@ -458,55 +458,63 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="tblUsers" width="100%" cellspacing="0">
                                 <%
-                                	ArrayList<Usuario> listUser = new ArrayList<Usuario>();
-                                	Dt_Usuario dtu = new Dt_Usuario();
-                                	listUser = dtu.listaUserActivos();
+                                	ArrayList<Vw_RolUser> listRU = new ArrayList<Vw_RolUser>();
+                                	Dt_RolUser dtru = new Dt_RolUser();
+                                	listRU = dtru.listaRolUser();
                                 	
                                 %>
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Login</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Estado</th>
+                                            <th>Usuario</th>
+                                            <th>Rol</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Login</th>
-                                            <th>Nombre</th>
-                                            <th>Apellido</th>
-                                            <th>Estado</th>
+                                            <th>Usuario</th>
+                                            <th>Rol</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                    		<%
-                                       		for(Usuario us: listUser){
+                                       		for(Vw_RolUser vwru: listRU){
                                        	%>
                                        <tr>
-                                           <td><%=us.getIdUser() %></td>
-                                           <td><%=us.getUser() %></td>
-                                           <td><%=us.getNombre() %></td>
-                                           <td><%=us.getApellido() %></td>
-                                           <td><%=us.getEstado()==1||us.getEstado()==2?"ACTIVO":"INACTIVO" %></td>
+                                           <td><%=vwru.getIdrol_usuario() %></td>
+                                           <td><%=vwru.getUser() %></td>
+                                           <td><%=vwru.getRol() %></td>
                                            <td>
-                                           		<a id="btn-edita-abrir" href="editUsuario.jsp?userID=<%=us.getIdUser()%>">
-                        							<i class="fas fa-edit" title="Modificar datos del Usuario"></i>
+                                           		<a id="btn-edita-abrir" href="#">
+                        							<i class="fas fa-edit" title="Modificar datos"></i>
                         						</a>
-                                           		<a href="Sl_GestionUsuario?idU=<%=us.getIdUser()%>">
-                        							<i class="fas fa-trash-alt" title="Eliminar Usuario"></i>
+                                           		<a class="ajax-link" href="javascript:void(0);" 
+                                           		onclick="$.jAlert({
+                                           		    'type': 'confirm',
+                                           		    'confirmQuestion': '¿Realmente desea eliminar este registro?',
+                                           		    'onConfirm': function(e, btn){
+                                           		      e.preventDefault();
+                                           		      //do something here
+
+                                           		      window.location.href = 'Sl_GestionRolUser?idRU=<%=vwru.getIdrol_usuario()%>';
+                                           		      btn.parents('.jAlert').closeAlert();
+                                           		      return false;
+                                           		    },
+                                           		    'onDeny': function(e, btn){
+                                           		      e.preventDefault();
+                                           		      //do something here
+                                           		      btn.parents('.jAlert').closeAlert();
+                                           		      return false;
+                                           		    }
+                                           		  });">
+                        							<i class="fas fa-trash-alt" title="Eliminar Rol a Usuario"></i>
                         						</a>
                                            		<a href="#">
-                        							<i class="fas fa-eye" title="Visualizar Usuario"></i>
+                        							<i class="fas fa-eye" title="Visualizar"></i>
                         						</a>
-                                           		<a href="fotoUser.jsp?idUsuario=<%=us.getIdUser()%>">
-                        							<i class="fas fa-camera" title="Registrar Foto del Usuario"></i>
-                        						</a>
-                                           
                                            </td>
                                        </tr>
                                        		<%

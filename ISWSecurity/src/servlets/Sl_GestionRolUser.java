@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +31,19 @@ public class Sl_GestionRolUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int idRolUser =0;
+		idRolUser = Integer.parseInt(request.getParameter("idRU"));
+		Dt_RolUser dtru = new Dt_RolUser(); 
+		
+		if(dtru.eliminaRU(idRolUser)) {
+        	response.sendRedirect("tblRolUser.jsp?msj=5");
+        }
+        else {
+        	response.sendRedirect("tblRolUser.jsp?msj=6");
+        }
+		
+		
 	}
 
 	/**
@@ -59,10 +70,10 @@ public class Sl_GestionRolUser extends HttpServlet {
 		        try {
 		        	
 			        if(dtru.guardarRolUser(ru)) {
-			        	response.sendRedirect("rolUser.jsp?msj=1");
+			        	response.sendRedirect("tblRolUser.jsp?msj=1");
 			        }
 			        else {
-			        	response.sendRedirect("rolUser.jsp?msj=2");
+			        	response.sendRedirect("tblRolUser.jsp?msj=2");
 			        }
 			        	
 		        }
