@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidades.Rol;
-import entidades.Usuario;
 
 public class Dt_Rol {
 	

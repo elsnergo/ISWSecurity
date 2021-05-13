@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import entidades.Usuario;
+import vistas.Vw_RolUser;
 
 public class Dt_Usuario {
 	
@@ -120,7 +121,6 @@ public class Dt_Usuario {
 		
 		return user;
 	}
-	
 	
 	//Metodo para almacenar nuevo usuario
 	public boolean guardarUser(Usuario user){
@@ -303,6 +303,91 @@ public class Dt_Usuario {
 		return actualizado;
 	}
 	
+	// METODO PARA VERIFICAR USUARIO Y PWD //
+	public boolean dtverificarLogin(String login, String clave, int rol)
+	{
+		boolean existe=false;
+		String SQL = ("SELECT * FROM public.vw_user_rol WHERE \"user\"=? AND pwd=? AND idrol=?");
+		try{
+			c = PoolConexion.getConnection();
+			ps = c.prepareStatement(SQL);
+			ps.setString(1, login);
+			ps.setString(2, clave);
+			ps.setInt(3, rol);
+			rs = ps.executeQuery();
+			if(rs.next()){
+				existe=true;
+			}
+		}
+		catch (Exception e){
+			System.out.println("DATOS: ERROR AL VERIFICAR EL LOGIN "+ e.getMessage());
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(ps != null){
+					ps.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	
+		return existe;
+	}
 	
+	// METODO PARA OBTENER UN OBJETO DE TIPO Vw_RolUser //
+	public Vw_RolUser dtGetRU(String login)
+{
+	Vw_RolUser vwru = new Vw_RolUser();
+	String SQL = ("SELECT * FROM public.vw_user_rol where \"user\"=?");
+	try{
+		c = PoolConexion.getConnection();
+		ps = c.prepareStatement(SQL);
+		ps.setString(1, login);
+		rs = ps.executeQuery();
+		if(rs.next()){
+			vwru.setIdrol_usuario(rs.getInt("idrol_usuario"));
+			vwru.setIduser(rs.getInt("iduser"));
+			vwru.setIdrol(rs.getInt("idrol"));
+			vwru.setUser(rs.getString("user"));
+			vwru.setRol(rs.getString("rol"));
+			vwru.setPwd(rs.getString("pwd"));
+			vwru.setNombres(rs.getString("nombres"));
+			vwru.setApellidos(rs.getString("apellidos"));
+		}
+	}
+	catch (Exception e){
+		System.out.println("DATOS: ERROR EN dtGetRU "+ e.getMessage());
+		e.printStackTrace();
+	}
+	finally {
+		try {
+			if(rs != null){
+				rs.close();
+			}
+			if(ps != null){
+				ps.close();
+			}
+			if(c != null){
+				PoolConexion.closeConnection(c);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	return vwru;
+}
+
 }

@@ -1,4 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="entidades.*, datos.*, java.util.*;"%>
+<%
+	response.setHeader( "Pragma", "no-cache" );
+	response.setHeader( "Cache-Control", "no-store" );
+	response.setDateHeader( "Expires", 0 );
+	response.setDateHeader( "Expires", -1 );
+	
+	String mensaje = request.getParameter("msj");
+	mensaje=mensaje==null?"":mensaje;
+	
+	HttpSession hts = request.getSession(false);
+	hts.removeAttribute("acceso");
+	hts.invalidate();
+
+%>
 <!DOCTYPE html>
 <html>
 
@@ -9,7 +23,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Login HR</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -36,35 +50,37 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Inicio de Sesión Sist. "HR"</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" method="post" action="./Sl_Login">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="userName" name="userName" placeholder="Usuario" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="pwd" name="pwd" placeholder="Contraseña" required>
                                         </div>
                                         <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
+                                            <%
+			                                	ArrayList<Rol> listRol = new ArrayList<Rol>();
+			                                	Dt_Rol dtr = new Dt_Rol();
+												listRol = dtr.listaRolActivos();
+                                			%>
+                                    		<select class="form-control" name="cbxRol" id="cbxRol" required>
+		                                    	<option value="">Seleccione...</option>
+		                                    	<%
+		                                    		for(Rol r: listRol){
+		                                    	%>	
+		                                    		<option value="<%=r.getIdRol()%>"><%=r.getRol()%></option>
+		                                    	<%
+		                                    		}
+		                                    	%>
+                                    		</select>
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </a>
                                         <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
+                                        <input type="submit" value="Entrar" class="btn btn-primary btn-user btn-block" />
+                                        <input type="submit" value="Cancelar" class="btn btn-google btn-user btn-block" />
                                     </form>
                                     <hr>
                                     <div class="text-center">

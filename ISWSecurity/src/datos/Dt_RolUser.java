@@ -45,6 +45,9 @@ public class Dt_RolUser {
 				vwru.setIdrol(rs.getInt("idrol"));
 				vwru.setUser(rs.getString("user"));
 				vwru.setRol(rs.getString("rol"));
+				vwru.setPwd(rs.getString("pwd"));
+				vwru.setNombres(rs.getString("nombres"));
+				vwru.setApellidos(rs.getString("apellidos"));
 				listRU.add(vwru);
 			}
 		}
