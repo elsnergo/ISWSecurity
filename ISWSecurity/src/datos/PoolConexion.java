@@ -16,6 +16,11 @@ public class PoolConexion {
 	private static String url = "jdbc:postgresql://localhost:5432/"+db;
 	private static String user = "postgres";
 	private static String password = "eGONZALEZ87";
+	//SERVIDOR REMOTO
+//	private static String db = "Mi_BD";
+//	private static String url = "jdbc:postgresql://165.98.12.158:5432/"+db;
+//	private static String user = "risw";
+//	private static String password = "P0$GR3$2021*";
 	
 	//CONSTRUCTOR
 	private PoolConexion(){
