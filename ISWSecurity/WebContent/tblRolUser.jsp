@@ -449,8 +449,8 @@
                         		</a>
                         		<!-- FIN Button trigger modal -->
                         		&nbsp;&nbsp;
-                        		<a href="#">
-                        			<i class="fas fa-print fa-2x" title="Imprimir Lista de Usuarios Activos"></i>
+                        		<a href="#" onclick="printRolUser();">
+                        			<i class="fas fa-print fa-2x" title="Imprimir Lista de Roles por Usuario"></i>
                         		</a>
                         		
                         	</div>
@@ -611,7 +611,14 @@
 <script src="jAlert/dist/jAlert.min.js"></script>
 <script src="jAlert/dist/jAlert-functions.min.js"> //optional!!</script>
 
-<script>
+<script type="text/javascript">
+	// IMPRIMIR //
+	function printRolUser()
+	{
+		window.open("Sl_Rpt_RolUser", '_blank');
+	}
+
+
     $(document).ready(function ()
     {
         ////// APLICAMOS FORMATO Y BOTONES A LA TABLA //// INICIAMOS EL PLUGIN DATATABLE
