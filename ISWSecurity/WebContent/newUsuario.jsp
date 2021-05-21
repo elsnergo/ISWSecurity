@@ -38,6 +38,9 @@ import="vistas.*, entidades.*, datos.*, java.util.*;"%>
 		}	
 	}
 	
+	//Variable de control de mensajes
+	String varMsj = request.getParameter("msj")==null?"":request.getParameter("msj");
+	
 %>    
     
 <!DOCTYPE html>
@@ -57,6 +60,9 @@ import="vistas.*, entidades.*, datos.*, java.util.*;"%>
 
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+<!-- jAlert css  -->
+<link rel="stylesheet" href="jAlert/dist/jAlert.css" />
 
 </head>
 <body class="bg-gradient-primary">
@@ -127,5 +133,38 @@ import="vistas.*, entidades.*, datos.*, java.util.*;"%>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- jAlert js -->
+	<script src="jAlert/dist/jAlert.min.js"></script>
+	<script src="jAlert/dist/jAlert-functions.min.js"> //optional!!</script>
+	
+	
+	<script type="text/javascript">
+	
+	    $(document).ready(function ()
+	    {
+
+			/////////// VARIABLE DE CONTROL MSJ ///////////
+	        var mensaje = "";
+	        mensaje = "<%=varMsj%>";
+	
+	        if(mensaje == "existe"){
+	        	errorAlert('Error', 'El userName que esta intentando registrar ya existe en la base de datos!');
+	        }
+	        
+	        $("#txtPwd2").change(function(){
+	        	var clave = "";
+		        var clave2 = "";
+		        clave = $("#txtPwd").val();
+		        clave2 = $("#txtPwd2").val();
+		        if(clave!=clave2){
+		        	errorAlert('Error', 'Las contraseñas no coinciden');
+		        	$("#txtPwd").val("");
+		        	$("#txtPwd2").val("");
+	          	}
+	        });
+
+	    });
+	</script>
 </body>
 </html>

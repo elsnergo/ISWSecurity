@@ -5,8 +5,9 @@
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="175"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="817"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="dsHR"/>
+	<parameter name="idU" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * FROM usuario]]>
+		<![CDATA[SELECT * FROM usuario where "idUser"=$P{idU} ]]>
 	</queryString>
 	<field name="idUser" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="idUser"/>

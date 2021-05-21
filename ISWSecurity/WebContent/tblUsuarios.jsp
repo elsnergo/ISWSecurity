@@ -539,7 +539,7 @@ import="vistas.*, entidades.*, datos.*, java.util.*;" %>
                                            		<a href="Sl_GestionUsuario?idU=<%=us.getIdUser()%>">
                         							<i class="fas fa-trash-alt" title="Eliminar Usuario"></i>
                         						</a>
-                                           		<a href="#">
+                                           		<a href="#" onclick="verRptUserByID(<%=us.getIdUser()%>);">
                         							<i class="fas fa-eye" title="Visualizar Usuario"></i>
                         						</a>
                                            		<a href="fotoUser.jsp?idUsuario=<%=us.getIdUser()%>">
@@ -647,6 +647,11 @@ import="vistas.*, entidades.*, datos.*, java.util.*;" %>
 	function verRptUsuarios()
 	{
 		window.open("Sl_Rpt_Usuarios", '_blank');
+	}
+	// IMPRIMIR //
+	function verRptUserByID(idUs)
+	{
+		window.open("Sl_Rpt_UserByID?idUser="+idUs, '_blank');
 	}
 	
 	

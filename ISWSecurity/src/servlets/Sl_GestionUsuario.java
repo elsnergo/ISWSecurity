@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import entidades.Usuario;
 import datos.Dt_Usuario;
+import negocio.Ng_Usuario;
 
 /**
  * Servlet implementation class Sl_GestionUsuario
@@ -60,8 +61,9 @@ public class Sl_GestionUsuario extends HttpServlet {
 		opc = Integer.parseInt(request.getParameter("opcion"));
 		
 		//CONSTRUIR EL OBJETO USUARIO
-		Dt_Usuario dtu = new Dt_Usuario();
 		Usuario user = new Usuario();
+		Dt_Usuario dtu = new Dt_Usuario();
+		Ng_Usuario ngu = new Ng_Usuario();
 		
 		user.setNombre(request.getParameter("txtNombres"));
 		user.setApellido(request.getParameter("txtApellidos"));
@@ -76,14 +78,18 @@ public class Sl_GestionUsuario extends HttpServlet {
 				        Date fechaSistema = new Date();
 				        user.setfCreacion(new java.sql.Timestamp(fechaSistema.getTime()));
 				        System.out.println("user.getFechaCreacion(): "+user.getfCreacion());
-				        if(dtu.guardarUser(user)) {
-				        	response.sendRedirect("tblUsuarios.jsp?msj=1");
+				        if(ngu.existeUser(user.getUser())) {
+				        	response.sendRedirect("newUsuario.jsp?msj=existe");
 				        }
 				        else {
-				        	response.sendRedirect("tblUsuarios.jsp?msj=2");
+				        	if(dtu.guardarUser(user)) {
+					        	response.sendRedirect("tblUsuarios.jsp?msj=1");
+					        }
+					        else {
+					        	response.sendRedirect("tblUsuarios.jsp?msj=2");
+					        }
 				        }
-				        	
-			        	
+				        
 			        }
 			        catch(Exception e) {
 			        	System.out.println("Sl_GestionUsuario, el error es: " + e.getMessage());
