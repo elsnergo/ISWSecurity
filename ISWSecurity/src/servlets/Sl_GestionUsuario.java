@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import entidades.Usuario;
 import datos.Dt_Usuario;
+import datos.Dt_enviarEmail;
 import negocio.Ng_Usuario;
 
 /**
@@ -64,11 +65,15 @@ public class Sl_GestionUsuario extends HttpServlet {
 		Usuario user = new Usuario();
 		Dt_Usuario dtu = new Dt_Usuario();
 		Ng_Usuario ngu = new Ng_Usuario();
+		Dt_enviarEmail dtem = new Dt_enviarEmail();
 		
 		user.setNombre(request.getParameter("txtNombres"));
 		user.setApellido(request.getParameter("txtApellidos"));
 		user.setUser(request.getParameter("txtUserName"));
 		user.setPwd(request.getParameter("txtPwd"));
+		user.setEmail(request.getParameter("txtEmail"));
+		//GENERAMOS EL CODIGO DE VERIFICACION Y LO ASIGNAMOS AL OBJETO
+		user.setCod_verificacion(dtu.randomAlphaNumeric(10)); // 10 PORQUE ES LA CANTIDAD DE CARACTERES QUE SOPORTA LA BD
 		
 		switch (opc){
 			case 1:{
@@ -83,7 +88,9 @@ public class Sl_GestionUsuario extends HttpServlet {
 				        }
 				        else {
 				        	if(dtu.guardarUser(user)) {
-					        	response.sendRedirect("tblUsuarios.jsp?msj=1");
+				        		if(dtem.enviarEmailVerificacion(user.getUser(), user.getPwd(), user.getEmail(), user.getCod_verificacion())) {
+				        			response.sendRedirect("tblUsuarios.jsp?msj=1");
+				        		}
 					        }
 					        else {
 					        	response.sendRedirect("tblUsuarios.jsp?msj=2");

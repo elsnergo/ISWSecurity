@@ -15,6 +15,8 @@ public class Usuario {
 	private Timestamp fEliminacion;
 	private int estado;
 	private String url_foto;
+	private String email;
+	private String cod_verificacion;
 	
 	//Metodos
 	public int getIdUser() {
@@ -76,6 +78,18 @@ public class Usuario {
 	}
 	public void setUrl_foto(String url_foto) {
 		this.url_foto = url_foto;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getCod_verificacion() {
+		return cod_verificacion;
+	}
+	public void setCod_verificacion(String cod_verificacion) {
+		this.cod_verificacion = cod_verificacion;
 	}
 	
 }

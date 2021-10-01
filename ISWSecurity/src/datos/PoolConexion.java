@@ -2,6 +2,9 @@ package datos;
 //Importando nuestras liberias
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+
 //import javax.swing.JOptionPane;
 import org.apache.commons.dbcp.BasicDataSource;
 
@@ -15,7 +18,7 @@ public class PoolConexion {
 	private static String db = "hr";
 	private static String url = "jdbc:postgresql://localhost:5432/"+db;
 	private static String user = "postgres";
-	private static String password = "eGONZALEZ87";
+	private static String password = "Egonzalez87";
 	//SERVIDOR REMOTO
 //	private static String db = "Mi_BD";
 //	private static String url = "jdbc:postgresql://165.98.12.158:5432/"+db;
@@ -98,9 +101,9 @@ public class PoolConexion {
     }
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {/*
 		// TODO Auto-generated method stub
-		/*
+		
 		PoolConexion.getInstance();
 		Connection con = null;
         
@@ -131,8 +134,8 @@ public class PoolConexion {
             	ex.printStackTrace();
                 System.out.println(ex.getMessage());
             }
-        }
-		*/
+        }*/
+		
 
 	}
 

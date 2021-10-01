@@ -674,7 +674,7 @@ import="vistas.*, entidades.*, datos.*, java.util.*;" %>
 
         if(mensaje == "1")
         {
-            successAlert('Éxito', 'Los datos han sido registrados exitosamente!');
+            successAlert('Éxito', 'Los datos han sido registrados exitosamente, se ha enviado un correo electrónico para verificar su correo y poder ingresar al sistema.');
         }
         if(mensaje == "2")
         {

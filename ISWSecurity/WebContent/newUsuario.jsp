@@ -105,6 +105,14 @@ import="vistas.*, entidades.*, datos.*, java.util.*;"%>
                                         <input type="password" class="form-control form-control-user" name="txtPwd2" id="txtPwd2"
                                             placeholder="Repetir Contraseña" required>
                                     </div>
+                                    <div class="col-sm-12 mb-3">
+                                        <input type="email" class="form-control form-control-user" name="txtEmail" id="txtEmail"
+                                            placeholder="Correo electrónico" required>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <input type="email" class="form-control form-control-user" name="txtEmail2" id="txtEmail2"
+                                            placeholder="Repetir Correo electrónico" required>
+                                    </div>
                                 </div>
 	                            <hr>
 	                            <div class="text-center">

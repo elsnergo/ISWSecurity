@@ -136,7 +136,10 @@ public class Dt_Usuario {
 			rsUsuario.updateString("nombres", user.getNombre());
 			rsUsuario.updateString("apellidos", user.getApellido());
 			rsUsuario.updateTimestamp("fcreacion", user.getfCreacion());
-			rsUsuario.updateInt("Estado", 1);
+			rsUsuario.updateString("email", user.getEmail());
+			//GUARDAMOS EL CODIGO DE VERIFICACION
+			rsUsuario.updateString("cod_verificacion", user.getCod_verificacion());
+			rsUsuario.updateInt("Estado", 0); //0 PORQUE EL USUARIO ES REGISTRADO PERO SU EMAIL AUN NO HA SIDO VERIFICADO
 			rsUsuario.insertRow();
 			rsUsuario.moveToCurrentRow();
 			guardado = true;
@@ -345,49 +348,71 @@ public class Dt_Usuario {
 	}
 	
 	// METODO PARA OBTENER UN OBJETO DE TIPO Vw_RolUser //
-	public Vw_RolUser dtGetRU(String login)
-{
-	Vw_RolUser vwru = new Vw_RolUser();
-	String SQL = ("SELECT * FROM public.vw_user_rol where \"user\"=?");
-	try{
-		c = PoolConexion.getConnection();
-		ps = c.prepareStatement(SQL);
-		ps.setString(1, login);
-		rs = ps.executeQuery();
-		if(rs.next()){
-			vwru.setIdrol_usuario(rs.getInt("idrol_usuario"));
-			vwru.setIduser(rs.getInt("iduser"));
-			vwru.setIdrol(rs.getInt("idrol"));
-			vwru.setUser(rs.getString("user"));
-			vwru.setRol(rs.getString("rol"));
-			vwru.setPwd(rs.getString("pwd"));
-			vwru.setNombres(rs.getString("nombres"));
-			vwru.setApellidos(rs.getString("apellidos"));
+	public Vw_RolUser dtGetRU(String login){
+		Vw_RolUser vwru = new Vw_RolUser();
+		String SQL = ("SELECT * FROM public.vw_user_rol where \"user\"=?");
+		try{
+			c = PoolConexion.getConnection();
+			ps = c.prepareStatement(SQL);
+			ps.setString(1, login);
+			rs = ps.executeQuery();
+			if(rs.next()){
+				vwru.setIdrol_usuario(rs.getInt("idrol_usuario"));
+				vwru.setIduser(rs.getInt("iduser"));
+				vwru.setIdrol(rs.getInt("idrol"));
+				vwru.setUser(rs.getString("user"));
+				vwru.setRol(rs.getString("rol"));
+				vwru.setPwd(rs.getString("pwd"));
+				vwru.setNombres(rs.getString("nombres"));
+				vwru.setApellidos(rs.getString("apellidos"));
+			}
 		}
-	}
-	catch (Exception e){
-		System.out.println("DATOS: ERROR EN dtGetRU "+ e.getMessage());
-		e.printStackTrace();
-	}
-	finally {
-		try {
-			if(rs != null){
-				rs.close();
-			}
-			if(ps != null){
-				ps.close();
-			}
-			if(c != null){
-				PoolConexion.closeConnection(c);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		catch (Exception e){
+			System.out.println("DATOS: ERROR EN dtGetRU "+ e.getMessage());
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(ps != null){
+					ps.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+		return vwru;
 	}
-
-	return vwru;
-}
+	
+	//METODO PARA GENERAR UN CODIGO DE VERIFICACION //
+	
+	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	public static String randomAlphaNumeric(int count) 
+	{
+		StringBuilder builder = new StringBuilder();
+		while (count-- != 0) 
+		{
+			int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+			builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		return builder.toString();
+	}
+	
+	public static void main(String[] args) 
+	{
+		//System.out.println(randomAlphaNumeric(10));
+	}
+	
+	
+	
+	
 
 }
