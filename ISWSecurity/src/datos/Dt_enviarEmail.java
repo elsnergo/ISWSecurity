@@ -39,7 +39,7 @@ public class Dt_enviarEmail {
     /*----------------------------------------------------------------------------*/
 	
 	  //METODO QUE ENVIA EL EMAIL DE VERIFICACION
-  		public boolean enviarEmailVerificacion(String usuario, String clave, String correo, String codigo) throws MessagingException{
+  		public boolean enviarEmailVerificacion(String usuario, String correo, String codigo) throws MessagingException{
   		
   			boolean debug=false;
   			
@@ -85,7 +85,6 @@ public class Dt_enviarEmail {
   		      	myMsg += "<strong><u> DATOS DEL USUARIO/ESTUDIANTE </u></strong> <br><br>";
   		      	myMsg += "<strong>USUARIO / CARNET: </strong> "+usuario+"<br>";
   		      	myMsg += "<strong>Correo electr&oacute;nico: </strong> "+email_solicitante+"<br>";
-  		      	myMsg += "<strong>Contraseña: </strong>"+clave+"<br>";
   		      	myMsg += "Enlace de verificaci&oacute;n: "  + linkHR + "?codverif="+ codigo + "<br>";
   		      	myMsg += "Aseg&uacute;rate de hacer clic en el enlace de verificaci&oacute;n que has recibido para que podamos activar tu cuenta, en caso de no haber solicitado una cuenta, por favor hacer caso omiso al presente correo.";
   		      	myMsg += "<br>----------------------------------------------------------<br>";

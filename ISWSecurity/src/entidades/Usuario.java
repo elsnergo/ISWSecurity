@@ -17,6 +17,7 @@ public class Usuario {
 	private String url_foto;
 	private String email;
 	private String cod_verificacion;
+	private String key_encriptacion;
 	
 	//Metodos
 	public int getIdUser() {
@@ -91,5 +92,12 @@ public class Usuario {
 	public void setCod_verificacion(String cod_verificacion) {
 		this.cod_verificacion = cod_verificacion;
 	}
+	public String getKey_encriptacion() {
+		return key_encriptacion;
+	}
+	public void setKey_encriptacion(String key_encriptacion) {
+		this.key_encriptacion = key_encriptacion;
+	}
+	
 	
 }

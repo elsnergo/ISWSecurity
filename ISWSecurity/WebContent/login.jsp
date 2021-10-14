@@ -8,6 +8,9 @@
 	String mensaje = request.getParameter("msj");
 	mensaje=mensaje==null?"":mensaje;
 	
+	String codigo = request.getParameter("codverif");
+	codigo=codigo==null?"":codigo;
+	
 	HttpSession hts = request.getSession(false);
 	hts.removeAttribute("acceso");
 	hts.invalidate();
@@ -54,6 +57,7 @@
                                     </div>
                                     <form class="user" method="post" action="./Sl_Login">
                                         <div class="form-group">
+                                        	<input type="hidden" name="codVerificacion" value="<%=codigo%>">
                                             <input type="text" class="form-control form-control-user"
                                                 id="userName" name="userName" placeholder="Usuario" required>
                                         </div>

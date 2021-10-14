@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import entidades.Usuario;
 import datos.Dt_Usuario;
 import datos.Dt_enviarEmail;
+import datos.Encrypt;
 import negocio.Ng_Usuario;
 
 /**
@@ -63,9 +64,10 @@ public class Sl_GestionUsuario extends HttpServlet {
 		
 		//CONSTRUIR EL OBJETO USUARIO
 		Usuario user = new Usuario();
+		Encrypt enc = new Encrypt();
 		Dt_Usuario dtu = new Dt_Usuario();
-		Ng_Usuario ngu = new Ng_Usuario();
 		Dt_enviarEmail dtem = new Dt_enviarEmail();
+		Ng_Usuario ngu = new Ng_Usuario();
 		
 		user.setNombre(request.getParameter("txtNombres"));
 		user.setApellido(request.getParameter("txtApellidos"));
@@ -74,6 +76,16 @@ public class Sl_GestionUsuario extends HttpServlet {
 		user.setEmail(request.getParameter("txtEmail"));
 		//GENERAMOS EL CODIGO DE VERIFICACION Y LO ASIGNAMOS AL OBJETO
 		user.setCod_verificacion(dtu.randomAlphaNumeric(10)); // 10 PORQUE ES LA CANTIDAD DE CARACTERES QUE SOPORTA LA BD
+		/////// ENCRIPTACION DE LA PWD //////////
+		String key = "";
+		String pwdEncrypt = "";
+		key=enc.generarLLave();
+		pwdEncrypt = enc.getAES(user.getPwd(),key);
+		user.setPwd(pwdEncrypt);
+		user.setKey_encriptacion(key);
+		/////////////////////////////////////////
+		
+		
 		
 		switch (opc){
 			case 1:{
@@ -88,7 +100,7 @@ public class Sl_GestionUsuario extends HttpServlet {
 				        }
 				        else {
 				        	if(dtu.guardarUser(user)) {
-				        		if(dtem.enviarEmailVerificacion(user.getUser(), user.getPwd(), user.getEmail(), user.getCod_verificacion())) {
+				        		if(dtem.enviarEmailVerificacion(user.getUser(), user.getEmail(), user.getCod_verificacion())) {
 				        			response.sendRedirect("tblUsuarios.jsp?msj=1");
 				        		}
 					        }

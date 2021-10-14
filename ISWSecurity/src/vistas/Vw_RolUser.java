@@ -10,6 +10,7 @@ public class Vw_RolUser {
 	private String pwd;
 	private String nombres;
 	private String apellidos;
+	private String key_encriptacion;
 	
 	//METODOS
 	public int getIdrol_usuario() {
@@ -60,9 +61,12 @@ public class Vw_RolUser {
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
+	public String getKey_encriptacion() {
+		return key_encriptacion;
+	}
+	public void setKey_encriptacion(String key_encriptacion) {
+		this.key_encriptacion = key_encriptacion;
+	}
 
-	
-	
-	
 	
 }

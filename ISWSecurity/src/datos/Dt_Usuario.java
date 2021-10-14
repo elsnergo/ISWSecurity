@@ -139,6 +139,7 @@ public class Dt_Usuario {
 			rsUsuario.updateString("email", user.getEmail());
 			//GUARDAMOS EL CODIGO DE VERIFICACION
 			rsUsuario.updateString("cod_verificacion", user.getCod_verificacion());
+			rsUsuario.updateString("key_encriptacion", user.getKey_encriptacion());
 			rsUsuario.updateInt("Estado", 0); //0 PORQUE EL USUARIO ES REGISTRADO PERO SU EMAIL AUN NO HA SIDO VERIFICADO
 			rsUsuario.insertRow();
 			rsUsuario.moveToCurrentRow();
@@ -306,16 +307,32 @@ public class Dt_Usuario {
 		return actualizado;
 	}
 	
-	// METODO PARA VERIFICAR USUARIO Y PWD //
+	// METODO PARA VERIFICAR USUARIO, PWD Y ROL //
 	public boolean dtverificarLogin(String login, String clave, int rol)
 	{
 		boolean existe=false;
-		String SQL = ("SELECT * FROM public.vw_user_rol WHERE \"user\"=? AND pwd=? AND idrol=?");
+		String SQL = ("SELECT * FROM public.vw_user_rol WHERE \"user\"=? AND pwd=? AND idrol=? AND estado<>0");
 		try{
+			/////// DESENCRIPTACION DE LA PWD //////////
+			Vw_RolUser vwru = new Vw_RolUser();
+			Encrypt enc = new Encrypt();
+			vwru = this.dtGetRU(login);
+			String pwdDecrypt = "";
+			String pwdEncrypt = "";
+			
+			pwdEncrypt = vwru.getPwd();
+			pwdDecrypt = enc.getAESDecrypt(pwdEncrypt,vwru.getKey_encriptacion());
+			/////////////////////////////////////////
 			c = PoolConexion.getConnection();
 			ps = c.prepareStatement(SQL);
 			ps.setString(1, login);
-			ps.setString(2, clave);
+			
+			if(clave.equals(pwdDecrypt)){
+				ps.setString(2, pwdEncrypt);
+			}
+			else {
+				ps.setString(2, clave);
+			}
 			ps.setInt(3, rol);
 			rs = ps.executeQuery();
 			if(rs.next()){
@@ -347,6 +364,112 @@ public class Dt_Usuario {
 		return existe;
 	}
 	
+	// Metodo para actualizar el estado del Usuario
+		public boolean updEstado(String login)
+		{
+			boolean actualizado = false;
+			
+			try
+			{
+				c = PoolConexion.getConnection();
+				this.llenaRsUsuario(c);	
+				rsUsuario.beforeFirst();
+				while(rsUsuario.next())
+				{
+					if(rsUsuario.getString("user").equals(login))
+					{
+						rsUsuario.updateInt("estado", 1);
+						rsUsuario.updateRow();
+						actualizado = true;
+						break;
+					}
+				}
+			}
+			catch (Exception e) 
+			{
+				System.err.println("ERROR AL ACTUALIZAR EL ESTADO DE USUARIO "+e.getMessage());
+				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					if(rsUsuario != null){
+						rsUsuario.close();
+					}
+					if(c != null){
+						PoolConexion.closeConnection(c);
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			return actualizado;
+		}
+	
+	
+		// METODO PARA VERIFICAR USUARIO, PWD, ROL Y CODIGO DE VERIFICACION //
+		public boolean dtverificarLogin2(String login, String clave, int rol, String codigo)
+		{
+			boolean existe=false;
+			String SQL = ("SELECT * FROM public.vw_user_rol WHERE \"user\"=? AND pwd=? AND idrol=? AND cod_verificacion=?");
+			try{
+				/////// DESENCRIPTACION DE LA PWD //////////
+				Vw_RolUser vwru = new Vw_RolUser();
+				Encrypt enc = new Encrypt();
+				vwru = this.dtGetRU(login);
+				String pwdDecrypt = "";
+				String pwdEncrypt = "";
+				
+				pwdEncrypt = vwru.getPwd();
+				pwdDecrypt = enc.getAESDecrypt(pwdEncrypt,vwru.getKey_encriptacion());
+				/////////////////////////////////////////
+				c = PoolConexion.getConnection();
+				ps = c.prepareStatement(SQL);
+				ps.setString(1, login);
+				if(clave.equals(pwdDecrypt)){
+					ps.setString(2, pwdEncrypt);
+				}
+				else {
+					ps.setString(2, clave);
+				}
+
+				ps.setInt(3, rol);
+				ps.setString(4, codigo);
+				rs = ps.executeQuery();
+				if(rs.next()){
+					existe=true;
+					updEstado(login);
+				}
+			}
+			catch (Exception e){
+				System.out.println("DATOS: ERROR AL VERIFICAR EL LOGIN "+ e.getMessage());
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					if(rs != null){
+						rs.close();
+					}
+					if(ps != null){
+						ps.close();
+					}
+					if(c != null){
+						PoolConexion.closeConnection(c);
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+			return existe;
+		}
+	
+	
 	// METODO PARA OBTENER UN OBJETO DE TIPO Vw_RolUser //
 	public Vw_RolUser dtGetRU(String login){
 		Vw_RolUser vwru = new Vw_RolUser();
@@ -363,6 +486,7 @@ public class Dt_Usuario {
 				vwru.setUser(rs.getString("user"));
 				vwru.setRol(rs.getString("rol"));
 				vwru.setPwd(rs.getString("pwd"));
+				vwru.setKey_encriptacion(rs.getString("key_encriptacion"));
 				vwru.setNombres(rs.getString("nombres"));
 				vwru.setApellidos(rs.getString("apellidos"));
 			}

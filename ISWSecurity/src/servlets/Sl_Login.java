@@ -45,11 +45,15 @@ public class Sl_Login extends HttpServlet {
 		Vw_RolUser vwru = new Vw_RolUser();
 		String usuario = "";
 		String clave = "";
+		String codigoV = "";
 		int rolId = 0;
 		
 		usuario = request.getParameter("userName");
 		clave = request.getParameter("pwd");
+				
+		
 		rolId = Integer.parseInt(request.getParameter("cbxRol"));
+		codigoV= request.getParameter("codVerificacion");
 		
 		try{
 			if(dtu.dtverificarLogin(usuario, clave, rolId)){
@@ -59,7 +63,15 @@ public class Sl_Login extends HttpServlet {
 				response.sendRedirect("index.jsp");
 			}
 			else{
-				response.sendRedirect("login.jsp?msj=403");
+				if(dtu.dtverificarLogin2(usuario, clave, rolId, codigoV)){
+					vwru = dtu.dtGetRU(usuario);
+					HttpSession hts = request.getSession(true);
+					hts.setAttribute("acceso", vwru);
+					response.sendRedirect("index.jsp");
+				}
+				else{
+					response.sendRedirect("login.jsp?msj=403");
+				}	
 			}
 		}
 		catch(Exception e)
