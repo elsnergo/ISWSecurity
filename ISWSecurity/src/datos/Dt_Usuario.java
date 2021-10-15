@@ -122,6 +122,56 @@ public class Dt_Usuario {
 		return user;
 	}
 	
+	// Metodo para obtener los datos de un usuario en proceso de recuperacion de pwd
+	public Usuario getUserPwd(String userName, String userEmail){
+		Usuario user = new Usuario();
+		try{
+			c = PoolConexion.getConnection();
+			ps = c.prepareStatement("select * from public.\"usuario\" where estado <> 3 and email=? and \"user\"=?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+			ps.setString(1, userEmail);
+			ps.setString(2, userName);
+			rs = ps.executeQuery();
+			if(rs.next()){
+				user.setIdUser(rs.getInt("idUser"));
+				user.setUser(rs.getString("user"));
+				user.setPwd(rs.getString("pwd"));
+				user.setEmail(rs.getString("email"));
+				user.setNombre(rs.getString("nombres"));
+				user.setApellido(rs.getString("apellidos"));
+				user.setUrl_foto(rs.getString("url_foto"));
+				user.setCod_verificacion(rs.getString("cod_verificacion"));
+				user.setKey_encriptacion(rs.getString("key_encriptacion"));
+				user.setEstado(rs.getInt("estado"));
+			}
+			else {
+				user.setIdUser(0);
+			}
+		}
+		catch (Exception e){
+			System.out.println("DATOS ERROR getUserPwd(): "+ e.getMessage());
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				if(rs != null){
+					rs.close();
+				}
+				if(ps != null){
+					ps.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return user;
+	}
+	
 	//Metodo para almacenar nuevo usuario
 	public boolean guardarUser(Usuario user){
 		boolean guardado = false;
@@ -199,6 +249,56 @@ public class Dt_Usuario {
 		}
 		finally
 		{
+			try {
+				if(rsUsuario != null){
+					rsUsuario.close();
+				}
+				if(c != null){
+					PoolConexion.closeConnection(c);
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return modificado;
+	}
+	
+	// Metodo para actualizar la contraseña del usuario
+	public boolean updatePwd(Usuario user, String newPwd)
+	{
+		boolean modificado=false;	
+		try{
+			c = PoolConexion.getConnection();
+			/////// ENCRIPTACION DE LA PWD //////////
+			Encrypt enc = new Encrypt();
+			String key = "";
+			String pwdEncrypt = "";
+			key=enc.generarLLave();
+			pwdEncrypt = enc.getAES(newPwd,key);
+			user.setPwd(pwdEncrypt);
+			user.setKey_encriptacion(key);
+			/////////////////////////////////////////
+			this.llenaRsUsuario(c);
+			rsUsuario.beforeFirst();
+			while (rsUsuario.next()){
+				if(rsUsuario.getInt(1)==user.getIdUser()){
+					rsUsuario.updateString("pwd", user.getPwd());
+					rsUsuario.updateString("key_encriptacion", user.getKey_encriptacion());
+					rsUsuario.updateTimestamp("fmodificacion", user.getfModificacion());
+					rsUsuario.updateInt("estado", 2);
+					rsUsuario.updateRow();
+					modificado=true;
+					break;
+				}
+			}
+		}
+		catch (Exception e){
+			System.err.println("ERROR AL ACTUALIZAR USUARIO "+e.getMessage());
+			e.printStackTrace();
+		}
+		finally{
 			try {
 				if(rsUsuario != null){
 					rsUsuario.close();
